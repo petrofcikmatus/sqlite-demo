@@ -7,8 +7,11 @@
  */
 
 if ($db = new PDO('sqlite:./database.db')) {
-    //$db->query("CREATE TABLE foo (bar VARCHAR(250))");
-    $db->query("INSERT INTO foo VALUES (" . microtime(true) . ")");
+    $db->query("CREATE TABLE IF NOT EXISTS foo (bar VARCHAR(250))");
+
+    $query = $db->prepare("INSERT INTO foo VALUES (?)");
+    $query->execute(array(microtime(true)));
+
     $result = $db->query("select bar from foo");
 
     $super_result = $result->fetchAll(PDO::FETCH_OBJ);
