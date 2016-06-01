@@ -1,12 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: matusko
  * Date: 7/13/15
  * Time: 11:49 PM
  */
 
-if ($db = new PDO('sqlite:./database.db')) {
+try {
+    $db = new PDO('sqlite:./database.db');
+
     $db->query("CREATE TABLE IF NOT EXISTS foo (bar VARCHAR(250))");
 
     $query = $db->prepare("INSERT INTO foo VALUES (?)");
@@ -16,7 +17,8 @@ if ($db = new PDO('sqlite:./database.db')) {
 
     $super_result = $result->fetchAll(PDO::FETCH_OBJ);
 
-    exit("<pre>" . print_r($super_result, true) . "</pre>");
-} else {
-    die("neeee");
+} catch (Exception $e) {
+    exit($e->getMessage());
 }
+
+exit("<pre>" . print_r($super_result, true) . "</pre>");
